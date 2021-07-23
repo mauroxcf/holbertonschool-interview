@@ -1,22 +1,27 @@
 #!/usr/bin/python3
-
+""" This module contain the canUnlockAll method """
 
 
 def canUnlockAll(boxes):
-    print(boxes)
-    all_keys = boxes[0] # 1,2
-    # aqui guardo el indice
-    open_boxes = [0] # 0,1
-    i = 1
-    while i < len(boxes):
-        if i in all_keys:
-            if i not in open_boxes:
-                all_keys.append(boxes[i])
-                open_boxes.append(i)
-                i = 0
-        i += 1
-    print(open_boxes)
-    if len(open_boxes) == len(boxes):
-        return True
+    """ determines if all the boxes can be opened. """
+    unlockeds = [0]
+    bx_len = len(boxes)
+
+    if bx_len > 1:
+        for j in boxes[0]:
+            if j not in unlockeds and j < bx_len and j > 0:
+                unlockeds.append(j)
     else:
-        return False
+        return True
+
+    i = 1
+    while i < len(unlockeds):
+        for j in boxes[unlockeds[i]]:
+            if j not in unlockeds and j < bx_len and j > 0:
+                unlockeds.append(j)
+        i += 1
+
+    if len(unlockeds) == bx_len:
+        return True
+
+    return False
