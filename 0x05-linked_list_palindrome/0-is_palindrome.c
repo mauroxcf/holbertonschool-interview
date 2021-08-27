@@ -1,46 +1,27 @@
 #include "palindrome.h"
 
-int rec_palindrome(unsigned long *n, unsigned long ten, unsigned long tmp);
-
 /**
- * is_palindrome - checks whether or not a given unsigned integer
- * is a palindrome.
- *
- * @n: is the number to be checked
- *
- * Return: 1 if n is a palindrome, and 0 otherwise
-*/
+ * is_palindrome - checks if a number is a palindrome
+ * @n: the number to check
+ * Return: 1 if n is palindrome 0 otherwise
+ */
 int is_palindrome(unsigned long n)
 {
-	return (rec_palindrome(&n, 10, n));
-}
+	char num[50];
+	int i, total_digits;
 
-/**
- * rec_palindrome - checks whether or not a given unsigned integer
- * is a palindrome.
- *
- * @n: is the number to be checked
- * @moon: helps to find @n size
- * @tmp: temporal variable of @n
- *
- * Return: 1 if n is a palindrome, and 0 otherwise
-*/
-int rec_palindrome(unsigned long *n, unsigned long ten, unsigned long tmp)
-{
-	unsigned long module = 0;
+	for (i = 0; n; i++)
+	{
+		num[i] = n % 10;
+		n = n / 10;
+	}
+	num[i] = '\0';
 
-	module = tmp % ten;
-	tmp = tmp / ten;
+	total_digits = i;
+	for (i = 0; i < (total_digits / 2); i++)
 
-	if (tmp > 0)
-		if (!rec_palindrome(n, ten, tmp))
+		if (num[i] != num[total_digits - 1 - i])
 			return (0);
-
-	tmp = *n % ten;
-	*n /= ten;
-
-	if (tmp != module)
-		return (0);
 
 	return (1);
 }
