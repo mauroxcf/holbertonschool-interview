@@ -21,9 +21,10 @@ status_code_counter = {
 
 def print_dict(dicti):
     """ print a dictionary """
-    for i, j in dicti.items():
-        if j > 0:
-            print("{}: {}".format(i, j))j
+    for k, v in dicti.items():
+        if v > 0:
+            print("{}: {}".format(k, v))
+
 
 try:
     for line in sys.stdin:
