@@ -1,46 +1,45 @@
 #!/usr/bin/python3
-"""  Log Parsing Script """
-
-
+'''Log Parsing'''
 import sys
 
-counter = 0
-sizes = 0
 
-status_code_counter = {
-    "200": 0,
-    "301": 0,
-    "400": 0,
-    "401": 0,
-    "403": 0,
-    "404": 0,
-    "405": 0,
-    "500": 0
-}
+def print_stats(total_size, codes_count):
+    '''print the stats of the parser
+    Args:
+        total_size is the acumulated size of the files parsed
+        codes_count is a dict with the count for each code
+    return: nothing
+    '''
+    print("File size: {:d}".format(total_size))
+    for k, v in sorted(codes_count.items()):
+        print("{}: {}".format(k, v))
 
 
-def print_dict(dicti):
-    """ print a dictionary """
-    for k, v in dicti.items():
-        if v > 0:
-            print("{}: {}".format(k, v))
-
-
+count = 0
+total_size = 0
+status_codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
+codes_count = {}
+val_str = "GET /projects/260 HTTP/1.1"
 try:
     for line in sys.stdin:
-        counter += 1
-
-        input_format_list = line.split(" ")
-
-        if len(input_format_list) > 2:
-            if input_format_list[-2] in status_code_counter:
-                status_code_counter[input_format_list[-2]] += 1
-            sizes += int(input_format_list[-1])
-
-            if counter == 10:
-                print("File size:", sizes)
-                print_dict(status_code_counter)
-                counter = 0
-finally:
-    print("File size:", sizes)
-    print_dict(status_code_counter)
+        if val_str in line:
+            split = line.split(' ')
+            if len(split) < 4:
+                continue
+            try:
+                total_size += int(split[-1])
+            except Exception:
+                continue
+            code = split[-2]
+            if code in status_codes:
+                if code in codes_count.keys():
+                    codes_count[code] += 1
+                else:
+                    codes_count[code] = 1
+        count += 1
+        if count % 10 == 0:
+            print_stats(total_size, codes_count)
+    else:
+        print_stats(total_size, codes_count)
+except KeyboardInterrupt:
+    print_stats(total_size, codes_count)
