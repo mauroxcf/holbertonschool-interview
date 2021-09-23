@@ -7,7 +7,7 @@ def validUTF8(data):
     Args:
         data (list): contain multiple characters
     """
-     n_bytes = 0
+    n_bytes = 0
 
     for num in data:
         bin_rep = format(num, '#010b')[-8:]
