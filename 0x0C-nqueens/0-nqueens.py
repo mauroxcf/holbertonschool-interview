@@ -46,7 +46,7 @@ if __name__ == "__main__":
         return True
 
     def solveNqueens(coords, col, safe_queens=[]):
-        """ Creates array of queen positions
+        """ Creates array of queen position
         Returns array
         """
         for x in range(N_int):
